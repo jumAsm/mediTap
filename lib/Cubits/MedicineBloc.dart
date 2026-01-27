@@ -1,7 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'medicine_event.dart';
-import 'medicine_state.dart';
-import '../models/medicine_model.dart';
+import '../ Models/MedicineModel.dart';
+import 'MedicineEvent.dart';
+import 'MedicineState.dart';
+
 
 class MedicineBloc extends Bloc<MedicineEvent, MedicineState> {
   final List<Medicine> _medicinesList = []; // قائمة مؤقتة للبيانات

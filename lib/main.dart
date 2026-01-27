@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'Cubits/MedicineBloc.dart';
 import 'Pages/HomeScreen.dart';
 
+
 void main() {
-  runApp(const KidneyCareApp());
+  runApp(
+    // توفير الـ Bloc لكامل التطبيق
+    BlocProvider(
+      create: (context) => MedicineBloc(),
+      child: const KidneyCareApp(),
+    ),
+  );
 }
 
 class KidneyCareApp extends StatelessWidget {
@@ -17,7 +26,7 @@ class KidneyCareApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF2D62ED)),
         useMaterial3: true,
       ),
-      home: const HomeScreen(), // استدعاء الشاشة من الملف المنفصل
+      home: const HomeScreen(),
     );
   }
 }

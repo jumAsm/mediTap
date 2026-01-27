@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import '../models/medicine_model.dart'; // تأكدي من مسار ملف الـ Model
+import '../ Models/MedicineModel.dart';
+
 
 abstract class MedicineState extends Equatable {
   @override
@@ -8,7 +9,6 @@ abstract class MedicineState extends Equatable {
 
 class MedicineInitial extends MedicineState {}
 
-// الحالة عند عرض قائمة الأدوية
 class MedicineLoaded extends MedicineState {
   final List<Medicine> medicines;
   MedicineLoaded(this.medicines);

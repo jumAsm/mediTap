@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import '../models/medicine_model.dart';
+import '../ Models/MedicineModel.dart';
+
 
 abstract class MedicineEvent extends Equatable {
   @override
