@@ -1,15 +1,11 @@
-class Medicine {
+class MedicineModel { // تأكدي من توحيد الاسم هنا
   final String name;
-  final String dosage;
   final String instruction;
   final int dailyLimit;
-  final String iconPath;
 
-  Medicine({
+  MedicineModel({
     required this.name,
-    required this.dosage,
     required this.instruction,
     required this.dailyLimit,
-    this.iconPath = '',
   });
 }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../Cubits/MedicineBloc.dart';
-import '../Cubits/MedicineState.dart';
+
+import '../Bloc/MedicineBloc.dart';
+import '../Bloc/MedicineState.dart';
 import 'MedicationHistory.dart';
 import 'ScannerScreen.dart';
 

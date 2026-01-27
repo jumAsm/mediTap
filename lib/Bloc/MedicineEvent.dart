@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../ Models/MedicineModel.dart';
+import '../models/MedicineModel.dart';
 
 
 abstract class MedicineEvent extends Equatable {
@@ -9,7 +9,7 @@ abstract class MedicineEvent extends Equatable {
 
 // حدث إضافة دواء جديد للسجل
 class AddMedicineEvent extends MedicineEvent {
-  final Medicine medicine;
+  final MedicineModel medicine;
   AddMedicineEvent(this.medicine);
 
   @override

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import '../ Models/MedicineModel.dart';
+import 'package:meditap/models/MedicineModel.dart';
+import '../models/MedicineModel.dart';
 
 
 abstract class MedicineState extends Equatable {
@@ -10,7 +11,7 @@ abstract class MedicineState extends Equatable {
 class MedicineInitial extends MedicineState {}
 
 class MedicineLoaded extends MedicineState {
-  final List<Medicine> medicines;
+  final List<MedicineModel> medicines;
   MedicineLoaded(this.medicines);
 
   @override
