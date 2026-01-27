@@ -3,7 +3,7 @@ import '../models/MedicineModel.dart';
 import 'MedicineEvent.dart';
 import 'MedicineState.dart';
 
-// تأكدي أنكِ تستخدمين Bloc وليس Cubit كما هو موضح هنا
+// تأكدي أنكِ تستخدمين bloc وليس Cubit كما هو موضح هنا
 class MedicineBloc extends Bloc<MedicineEvent, MedicineState> {
   final List<MedicineModel> _medicinesList = [];
 

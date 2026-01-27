@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'Cubits/MedicineBloc.dart';
-import 'Pages/HomeScreen.dart';
+import 'Bloc/MedicineBloc.dart';
 
+import 'Pages/HomeScreen.dart';
 
 void main() {
   runApp(
-    // توفير الـ Bloc لكامل التطبيق
     BlocProvider(
       create: (context) => MedicineBloc(),
       child: const KidneyCareApp(),

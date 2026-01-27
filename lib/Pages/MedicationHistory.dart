@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../Bloc/MedicineBloc.dart';
+import '../Bloc/MedicineState.dart';
 
 class MedicationHistoryScreen extends StatelessWidget {
   const MedicationHistoryScreen({super.key});
@@ -19,19 +22,41 @@ class MedicationHistoryScreen extends StatelessWidget {
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(20),
-        children: [
-          _buildCategoryHeader("Current Medications"),
-          _buildHistoryItem("Omega 3", "1 tablet daily", "Started: 20 Jan", Colors.orange.shade50, true),
-          _buildHistoryItem("Comlivit", "1 tablet daily", "Started: 15 Jan", Colors.blue.shade50, true),
+      body: BlocBuilder<MedicineBloc, MedicineState>(
+        builder: (context, state) {
+          if (state is MedicineLoaded && state.medicines.isNotEmpty) {
+            return ListView(
+              padding: const EdgeInsets.all(20),
+              children: [
+                _buildCategoryHeader("Current Medications"),
+                // عرض الأدوية المضافة ديناميكياً من الـ Bloc
+                ...state.medicines.map((med) => _buildHistoryItem(
+                  med.name,
+                  med.instruction,
+                  "Added Today", // يمكن تطويرها لاحقاً لإظهار التاريخ الحقيقي
+                  Colors.blue.shade50,
+                  true,
+                )),
 
-          const SizedBox(height: 30),
+                const SizedBox(height: 30),
+                _buildCategoryHeader("Past Medications"),
+                _buildHistoryItem("Panadol", "2 tablets", "Finished: 05 Jan", Colors.grey.shade100, false),
+              ],
+            );
+          }
 
-          _buildCategoryHeader("Past Medications"),
-          _buildHistoryItem("Panadol", "2 tablets", "Finished: 05 Jan", Colors.grey.shade100, false),
-          _buildHistoryItem("Vitamin C", "1 tablet", "Finished: 30 Dec", Colors.grey.shade100, false),
-        ],
+          // حالة عدم وجود أدوية مضافة بعد
+          return ListView(
+            padding: const EdgeInsets.all(20),
+            children: [
+              _buildCategoryHeader("Past Medications"),
+              _buildHistoryItem("Panadol", "2 tablets", "Finished: 05 Jan", Colors.grey.shade100, false),
+              _buildHistoryItem("Vitamin C", "1 tablet", "Finished: 30 Dec", Colors.grey.shade100, false),
+              const SizedBox(height: 20),
+              const Center(child: Text("No new medications added via scanner yet.")),
+            ],
+          );
+        },
       ),
     );
   }
@@ -67,7 +92,7 @@ class MedicationHistoryScreen extends StatelessWidget {
             ),
             child: Icon(
               Icons.medication,
-              color: isActive ? Colors.blueAccent : Colors.grey,
+              color: isActive ? const Color(0xFF4B84F4) : Colors.grey,
             ),
           ),
           const SizedBox(width: 16),

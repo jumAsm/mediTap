@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../Bloc/MedicineBloc.dart';
-import '../Bloc/MedicineState.dart';
-import 'MedicationHistory.dart';
-import 'ScannerScreen.dart';
+import '../Bloc/MedicineBloc.dart'; //
+import '../Bloc/MedicineState.dart'; //
+import 'MedicationHistory.dart'; //
+import 'ScannerScreen.dart'; //
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -25,31 +25,40 @@ class HomeScreen extends StatelessWidget {
             _buildKidneyRiskBanner(),
             const SizedBox(height: 32),
 
-            // --- الجزء الديناميكي المرتبط بـ Bloc ---
-            const Text("Your Medications",
-                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18, color: Color(0xFF1A1C1E))),
+            // العنوان الخاص بقسم الأدوية المضافة
+            const Text(
+              "Your Medications",
+              style: TextStyle(
+                fontWeight: FontWeight.w800,
+                fontSize: 18,
+                color: Color(0xFF1A1C1E),
+              ),
+            ),
             const SizedBox(height: 16),
 
+            // استهلاك البيانات من MedicineBloc
             BlocBuilder<MedicineBloc, MedicineState>(
               builder: (context, state) {
                 if (state is MedicineLoaded && state.medicines.isNotEmpty) {
                   return Column(
                     children: state.medicines.map((med) => _buildMedicationItem(
-                      title: med.name,
-                      sub: med.instruction,
-                      days: "Daily Limit: ${med.dailyLimit}",
+                      title: med.name, //
+                      sub: med.instruction, //
+                      days: "Daily Limit: ${med.dailyLimit}", //
                       iconBg: Colors.blue.shade50,
                       iconColor: const Color(0xFF4B84F4),
                     )).toList(),
                   );
                 }
-                // يعرض هذا النص في حال لم يتم إضافة أي دواء بعد
+                // الحالة الافتراضية عند عدم وجود أدوية
                 return Center(
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: Text("No medications added yet.\nPress + to scan.",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.grey.shade400)),
+                    child: Text(
+                      "No medications added yet.\nPress + to scan.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.grey.shade400),
+                    ),
                   ),
                 );
               },
@@ -72,8 +81,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // --- Widgets ---
-
+  // بناء شريط التطبيق العلوي
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.transparent,
@@ -100,7 +108,10 @@ class HomeScreen extends StatelessWidget {
           child: IconButton(
             icon: const Icon(Icons.history, color: Colors.black, size: 28),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const MedicationHistoryScreen()));
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MedicationHistoryScreen()),
+              );
             },
           ),
         ),
@@ -112,13 +123,20 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  // بطاقة تتبع التقدم اليومي
   Widget _buildProgressCard() {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(32),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 15, offset: const Offset(0, 6))],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 15,
+            offset: const Offset(0, 6),
+          )
+        ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -126,7 +144,8 @@ class HomeScreen extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Your plan\nis almost done!", style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, height: 1.1)),
+              const Text("Your plan\nis almost done!",
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, height: 1.1)),
               const SizedBox(height: 14),
               Row(
                 children: const [
@@ -161,6 +180,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  // بانر مراقبة مخاطر الكلى
   Widget _buildKidneyRiskBanner() {
     return Container(
       padding: const EdgeInsets.all(20),
@@ -174,8 +194,10 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: const [
-                Text("Early Drug Risk Monitoring", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: Colors.white)),
-                Text("AI-powered kidney protection", style: TextStyle(color: Colors.white70, fontSize: 13)),
+                Text("Early Drug Risk Monitoring",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: Colors.white)),
+                Text("AI-powered kidney protection",
+                    style: TextStyle(color: Colors.white70, fontSize: 13)),
               ],
             ),
           ),
@@ -185,11 +207,21 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMedicationItem({required String title, required String sub, required String days, required Color iconBg, required Color iconColor}) {
+  // بناء عنصر الدواء الفردي في القائمة
+  Widget _buildMedicationItem({
+    required String title,
+    required String sub,
+    required String days,
+    required Color iconBg,
+    required Color iconColor,
+  }) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(28)),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(28),
+      ),
       child: Row(
         children: [
           Container(

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-
-import 'MedicineDetails.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../Bloc/MedicineBloc.dart'; //
+import '../Bloc/MedicineEvent.dart'; //
+import '../models/MedicineModel.dart'; //
+import 'MedicineDetails.dart'; //
 
 class ScannerScreen extends StatelessWidget {
   const ScannerScreen({super.key});
@@ -12,17 +14,17 @@ class ScannerScreen extends StatelessWidget {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          // 1. خلفية الكاميرا (تمثيل مؤقت)
+          // 1. خلفية الكاميرا (تمثيل مؤقت بصورة)
           Container(
             width: double.infinity,
             height: double.infinity,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage('https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=2030&auto=format&fit=crop'), // صورة تجريبية لعلبة دواء
+                image: NetworkImage('https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=2030&auto=format&fit=crop'),
                 fit: BoxFit.cover,
               ),
             ),
-            child: Container(color: Colors.black.withOpacity(0.3)), // طبقة تعتيم خفيفة
+            child: Container(color: Colors.black.withOpacity(0.3)),
           ),
 
           // 2. الطبقة العلوية (Header)
@@ -40,14 +42,10 @@ class ScannerScreen extends StatelessWidget {
                   child: Text(
                     "Add Medicine",
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
-                const SizedBox(width: 48), // لموازنة العنوان
+                const SizedBox(width: 48),
               ],
             ),
           ),
@@ -57,7 +55,6 @@ class ScannerScreen extends StatelessWidget {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                // الإطار الأبيض الرئيسي
                 Container(
                   width: 260,
                   height: 260,
@@ -66,26 +63,22 @@ class ScannerScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(30),
                   ),
                 ),
-                // الزوايا السميكة (Corners)
                 SizedBox(
                   width: 280,
                   height: 280,
-                  child: CustomPaint(
-                    painter: ScannerCornerPainter(),
-                  ),
+                  child: CustomPaint(painter: ScannerCornerPainter()),
                 ),
               ],
             ),
           ),
 
-          // 4. الأزرار السفلية
+          // 4. الأزرار السفلية والالتقاط
           Positioned(
             bottom: 50,
             left: 0,
             right: 0,
             child: Column(
               children: [
-                // زر الرفع من الاستوديو (نفس تصميم الصورة)
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   decoration: BoxDecoration(
@@ -95,22 +88,32 @@ class ScannerScreen extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: const [
-                      Text(
-                        "Upload From Gallery  ",
-                        style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
-                      ),
+                      Text("Upload From Gallery  ", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600)),
                       Icon(Icons.upload_outlined, color: Colors.black, size: 20),
                     ],
                   ),
                 ),
                 const SizedBox(height: 40),
-                // زر الالتقاط (Capture Button)
+
+                // زر الالتقاط المرتبط بـ Bloc
                 GestureDetector(
                   onTap: () {
-                    // الانتقال لصفحة التفاصيل عند "الالتقاط"
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const MedicineDetailsScreen()),
+                    // محاكاة بيانات دواء عند المسح
+                    final mockMedicine = MedicineModel(
+                      name: "Paracetamol",
+                      instruction: "Take 1 tablet every 6 hours",
+                      dailyLimit: 4,
+                    );
+
+                    // إرسال الدواء إلى الـ Bloc
+                    context.read<MedicineBloc>().add(AddMedicineEvent(mockMedicine));
+
+                    // العودة للهوم لرؤية النتيجة
+                    Navigator.pop(context);
+
+                    // رسالة نجاح
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Medicine added successfully!")),
                     );
                   },
                   child: Container(
@@ -122,10 +125,7 @@ class ScannerScreen extends StatelessWidget {
                     ),
                     child: Container(
                       margin: const EdgeInsets.all(5),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                      ),
+                      decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
                     ),
                   ),
                 ),
@@ -138,7 +138,6 @@ class ScannerScreen extends StatelessWidget {
   }
 }
 
-// رسام الزوايا الأربعة للإطار
 class ScannerCornerPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
@@ -150,27 +149,18 @@ class ScannerCornerPainter extends CustomPainter {
 
     const cornerLength = 40.0;
     final path = Path();
-
-    // زاوية أعلى يسار
     path.moveTo(0, cornerLength);
     path.lineTo(0, 0);
     path.lineTo(cornerLength, 0);
-
-    // زاوية أعلى يمين
     path.moveTo(size.width - cornerLength, 0);
     path.lineTo(size.width, 0);
     path.lineTo(size.width, cornerLength);
-
-    // زاوية أسفل يسار
     path.moveTo(0, size.height - cornerLength);
     path.lineTo(0, size.height);
     path.lineTo(cornerLength, size.height);
-
-    // زاوية أسفل يمين
     path.moveTo(size.width - cornerLength, size.height);
     path.lineTo(size.width, size.height);
     path.lineTo(size.width, size.height - cornerLength);
-
     canvas.drawPath(path, paint);
   }
 
