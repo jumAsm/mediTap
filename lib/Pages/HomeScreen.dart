@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../Bloc/MedicineBloc.dart'; //
-import '../Bloc/MedicineState.dart'; //
-import 'MedicationHistory.dart'; //
-import 'ScannerScreen.dart'; //
+import '../Bloc/MedicineBloc.dart';
+import '../Bloc/MedicineState.dart';
+import 'MedicationHistory.dart';
+import 'ScannerScreen.dart';
+import 'MedicineDetails.dart'; // استيراد صفحة التفاصيل لتفعيل الانتقال
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -25,7 +26,6 @@ class HomeScreen extends StatelessWidget {
             _buildKidneyRiskBanner(),
             const SizedBox(height: 32),
 
-            // العنوان الخاص بقسم الأدوية المضافة
             const Text(
               "Your Medications",
               style: TextStyle(
@@ -36,21 +36,31 @@ class HomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // استهلاك البيانات من MedicineBloc
+            // استهلاك البيانات من MedicineBloc بشكل ديناميكي
             BlocBuilder<MedicineBloc, MedicineState>(
               builder: (context, state) {
                 if (state is MedicineLoaded && state.medicines.isNotEmpty) {
                   return Column(
-                    children: state.medicines.map((med) => _buildMedicationItem(
-                      title: med.name, //
-                      sub: med.instruction, //
-                      days: "Daily Limit: ${med.dailyLimit}", //
-                      iconBg: Colors.blue.shade50,
-                      iconColor: const Color(0xFF4B84F4),
+                    children: state.medicines.map((med) => GestureDetector(
+                      // تفعيل النقر للانتقال لصفحة التفاصيل وتمرير بيانات الدواء المختار
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MedicineDetailsScreen(medicine: med),
+                          ),
+                        );
+                      },
+                      child: _buildMedicationItem(
+                        title: med.name,
+                        sub: med.instruction,
+                        days: "Daily Limit: ${med.dailyLimit}",
+                        iconBg: Colors.blue.shade50,
+                        iconColor: const Color(0xFF4B84F4),
+                      ),
                     )).toList(),
                   );
                 }
-                // الحالة الافتراضية عند عدم وجود أدوية
                 return Center(
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
@@ -81,7 +91,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // بناء شريط التطبيق العلوي
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.transparent,
@@ -123,7 +132,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // بطاقة تتبع التقدم اليومي
   Widget _buildProgressCard() {
     return Container(
       padding: const EdgeInsets.all(24),
@@ -180,7 +188,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // بانر مراقبة مخاطر الكلى
   Widget _buildKidneyRiskBanner() {
     return Container(
       padding: const EdgeInsets.all(20),
@@ -207,7 +214,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // بناء عنصر الدواء الفردي في القائمة
   Widget _buildMedicationItem({
     required String title,
     required String sub,
