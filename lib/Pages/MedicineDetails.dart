@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../models/MedicineModel.dart'; // تأكدي من المسار الصحيح للموديل
+import '../models/MedicineModel.dart';
 
 class MedicineDetailsScreen extends StatelessWidget {
-  final MedicineModel medicine; // استقبال بيانات الدواء
+  final MedicineModel medicine;
 
   const MedicineDetailsScreen({super.key, required this.medicine});
 
@@ -23,29 +23,23 @@ class MedicineDetailsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // عرض اسم الدواء من الموديل
             Text(
               medicine.name,
               style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Color(0xFF1A1C1E)),
             ),
             const SizedBox(height: 24),
-
             Row(
               children: [
                 Expanded(child: _buildInfoTile("Next Dose", "4 hrs", Icons.access_time, Colors.green)),
                 const SizedBox(width: 16),
-                // عرض الحد اليومي من الموديل
                 Expanded(child: _buildInfoTile("Daily Dose", "0 / ${medicine.dailyLimit}", Icons.error_outline, Colors.blue)),
               ],
             ),
             const SizedBox(height: 24),
-
             _buildDosageCard(),
             const SizedBox(height: 24),
-
             _buildHeartRateCard(),
             const SizedBox(height: 24),
-
             _buildAIAnalysisBanner(),
             const SizedBox(height: 40),
           ],
@@ -85,31 +79,57 @@ class MedicineDetailsScreen extends StatelessWidget {
         color: const Color(0xFFF1F6FF),
         borderRadius: BorderRadius.circular(28),
       ),
-      child: Column(
+      child: Row(
         children: [
-          Row(
-            children: [
-              const CircleAvatar(
-                backgroundColor: Colors.white,
-                radius: 25,
-                child: Icon(Icons.medication, color: Colors.blueAccent),
-              ),
-              const SizedBox(width: 16),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text("Dosage Instruction", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
-                  Text(medicine.instruction, style: const TextStyle(color: Colors.grey)), // تعليمات من الموديل
-                ],
-              )
-            ],
+          const CircleAvatar(
+            backgroundColor: Colors.white,
+            radius: 25,
+            child: Icon(Icons.medication, color: Colors.blueAccent),
           ),
+          const SizedBox(width: 16),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text("Dosage Instruction", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+              Text(medicine.instruction, style: const TextStyle(color: Colors.grey)),
+            ],
+          )
         ],
       ),
     );
   }
 
-  // ... (باقي الـ Widgets السابقة مثل HeartRate و AI Assistant)
-  Widget _buildHeartRateCard() { return Container(); } // اختصاراً
-  Widget _buildAIAnalysisBanner() { return Container(); } // اختصاراً
+  Widget _buildHeartRateCard() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.red.shade50,
+        borderRadius: BorderRadius.circular(28),
+      ),
+      child: const Row(
+        children: [
+          Icon(Icons.favorite, color: Colors.red),
+          SizedBox(width: 16),
+          Text("Heart Rate: 72 BPM", style: TextStyle(fontWeight: FontWeight.bold)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAIAnalysisBanner() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.blue.shade900,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: const Row(
+        children: [
+          Icon(Icons.auto_awesome, color: Colors.white),
+          SizedBox(width: 12),
+          Text("AI Analysis Available", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        ],
+      ),
+    );
+  }
 }

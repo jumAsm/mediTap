@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../Bloc/MedicineBloc.dart';
 import '../Bloc/MedicineState.dart';
+import '../models/MedicineModel.dart';
+import 'MedicineDetails.dart'; // إضافة الاستيراد لصفحة التفاصيل
 
 class MedicationHistoryScreen extends StatelessWidget {
   const MedicationHistoryScreen({super.key});
@@ -29,35 +31,62 @@ class MedicationHistoryScreen extends StatelessWidget {
               padding: const EdgeInsets.all(20),
               children: [
                 _buildCategoryHeader("Current Medications"),
-                // عرض الأدوية المضافة ديناميكياً من الـ Bloc
-                ...state.medicines.map((med) => _buildHistoryItem(
-                  med.name,
-                  med.instruction,
-                  "Added Today", // يمكن تطويرها لاحقاً لإظهار التاريخ الحقيقي
-                  Colors.blue.shade50,
-                  true,
+                ...state.medicines.map((med) => GestureDetector(
+                  onTap: () {
+                    // الانتقال لصفحة التفاصيل عند الضغط
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MedicineDetailsScreen(medicine: med),
+                      ),
+                    );
+                  },
+                  child: _buildHistoryItem(
+                    med.name,
+                    med.instruction,
+                    "Added Today",
+                    Colors.blue.shade50,
+                    true,
+                  ),
                 )),
 
                 const SizedBox(height: 30),
                 _buildCategoryHeader("Past Medications"),
-                _buildHistoryItem("Panadol", "2 tablets", "Finished: 05 Jan", Colors.grey.shade100, false),
+                // مثال لدواء قديم ثابت
+                _buildPastHistoryItem(context, "Panadol", "2 tablets", "Finished: 05 Jan"),
               ],
             );
           }
 
-          // حالة عدم وجود أدوية مضافة بعد
           return ListView(
             padding: const EdgeInsets.all(20),
             children: [
               _buildCategoryHeader("Past Medications"),
-              _buildHistoryItem("Panadol", "2 tablets", "Finished: 05 Jan", Colors.grey.shade100, false),
-              _buildHistoryItem("Vitamin C", "1 tablet", "Finished: 30 Dec", Colors.grey.shade100, false),
+              _buildPastHistoryItem(context, "Panadol", "2 tablets", "Finished: 05 Jan"),
+              _buildPastHistoryItem(context, "Vitamin C", "1 tablet", "Finished: 30 Dec"),
               const SizedBox(height: 20),
               const Center(child: Text("No new medications added via scanner yet.")),
             ],
           );
         },
       ),
+    );
+  }
+
+  // دالة مساعدة للأدوية السابقة لتحويلها لموديل عند الضغط
+  Widget _buildPastHistoryItem(BuildContext context, String name, String instruction, String date) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MedicineDetailsScreen(
+              medicine: MedicineModel(name: name, instruction: instruction, dailyLimit: 0),
+            ),
+          ),
+        );
+      },
+      child: _buildHistoryItem(name, instruction, date, Colors.grey.shade100, false),
     );
   }
 
@@ -100,21 +129,12 @@ class MedicationHistoryScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  name,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-                Text(
-                  dosage,
-                  style: const TextStyle(color: Colors.grey, fontSize: 13),
-                ),
+                Text(name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                Text(dosage, style: const TextStyle(color: Colors.grey, fontSize: 13)),
               ],
             ),
           ),
-          Text(
-            date,
-            style: const TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w500),
-          ),
+          Text(date, style: const TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w500)),
         ],
       ),
     );
