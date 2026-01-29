@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../Bloc/MedicineBloc.dart'; //
-import '../Bloc/MedicineEvent.dart'; //
-import '../models/MedicineModel.dart'; //
-import 'MedicineDetails.dart'; //
+import '../Bloc/MedicineBloc.dart';
+import '../Bloc/MedicineEvent.dart';
+import '../models/MedicineModel.dart';
 
 class ScannerScreen extends StatelessWidget {
   const ScannerScreen({super.key});
@@ -14,7 +13,6 @@ class ScannerScreen extends StatelessWidget {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          // 1. خلفية الكاميرا (تمثيل مؤقت بصورة)
           Container(
             width: double.infinity,
             height: double.infinity,
@@ -27,7 +25,6 @@ class ScannerScreen extends StatelessWidget {
             child: Container(color: Colors.black.withOpacity(0.3)),
           ),
 
-          // 2. الطبقة العلوية (Header)
           Positioned(
             top: 50,
             left: 0,
@@ -49,8 +46,6 @@ class ScannerScreen extends StatelessWidget {
               ],
             ),
           ),
-
-          // 3. إطار المسح (Scanner Overlay)
           Center(
             child: Stack(
               alignment: Alignment.center,
@@ -72,7 +67,6 @@ class ScannerScreen extends StatelessWidget {
             ),
           ),
 
-          // 4. الأزرار السفلية والالتقاط
           Positioned(
             bottom: 50,
             left: 0,
@@ -95,23 +89,18 @@ class ScannerScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 40),
 
-                // زر الالتقاط المرتبط بـ Bloc
                 GestureDetector(
                   onTap: () {
-                    // محاكاة بيانات دواء عند المسح
                     final mockMedicine = MedicineModel(
                       name: "Paracetamol",
                       instruction: "Take 1 tablet every 6 hours",
                       dailyLimit: 4,
                     );
 
-                    // إرسال الدواء إلى الـ Bloc
                     context.read<MedicineBloc>().add(AddMedicineEvent(mockMedicine));
 
-                    // العودة للهوم لرؤية النتيجة
                     Navigator.pop(context);
 
-                    // رسالة نجاح
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Medicine added successfully!")),
                     );

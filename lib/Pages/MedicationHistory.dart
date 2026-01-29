@@ -3,11 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../Bloc/MedicineBloc.dart';
 import '../Bloc/MedicineState.dart';
 import '../models/MedicineModel.dart';
-import 'MedicineDetails.dart'; // إضافة الاستيراد لصفحة التفاصيل
+import 'MedicineDetails.dart';
 
 class MedicationHistoryScreen extends StatelessWidget {
   const MedicationHistoryScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +32,6 @@ class MedicationHistoryScreen extends StatelessWidget {
                 _buildCategoryHeader("Current Medications"),
                 ...state.medicines.map((med) => GestureDetector(
                   onTap: () {
-                    // الانتقال لصفحة التفاصيل عند الضغط
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -52,7 +50,6 @@ class MedicationHistoryScreen extends StatelessWidget {
 
                 const SizedBox(height: 30),
                 _buildCategoryHeader("Past Medications"),
-                // مثال لدواء قديم ثابت
                 _buildPastHistoryItem(context, "Panadol", "2 tablets", "Finished: 05 Jan"),
               ],
             );
@@ -73,7 +70,6 @@ class MedicationHistoryScreen extends StatelessWidget {
     );
   }
 
-  // دالة مساعدة للأدوية السابقة لتحويلها لموديل عند الضغط
   Widget _buildPastHistoryItem(BuildContext context, String name, String instruction, String date) {
     return GestureDetector(
       onTap: () {

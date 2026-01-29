@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../Bloc/MedicineBloc.dart';
 import '../Bloc/MedicineState.dart';
 import 'MedicationHistory.dart';
 import 'ScannerScreen.dart';
-import 'MedicineDetails.dart'; // استيراد صفحة التفاصيل لتفعيل الانتقال
+import 'MedicineDetails.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,29 +34,32 @@ class HomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // استهلاك البيانات من MedicineBloc بشكل ديناميكي
             BlocBuilder<MedicineBloc, MedicineState>(
               builder: (context, state) {
                 if (state is MedicineLoaded && state.medicines.isNotEmpty) {
                   return Column(
-                    children: state.medicines.map((med) => GestureDetector(
-                      // تفعيل النقر للانتقال لصفحة التفاصيل وتمرير بيانات الدواء المختار
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MedicineDetailsScreen(medicine: med),
+                    children: state.medicines
+                        .map(
+                          (med) => GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      MedicineDetailsScreen(medicine: med),
+                                ),
+                              );
+                            },
+                            child: _buildMedicationItem(
+                              title: med.name,
+                              sub: med.instruction,
+                              days: "Daily Limit: ${med.dailyLimit}",
+                              iconBg: Colors.blue.shade50,
+                              iconColor: const Color(0xFF4B84F4),
+                            ),
                           ),
-                        );
-                      },
-                      child: _buildMedicationItem(
-                        title: med.name,
-                        sub: med.instruction,
-                        days: "Daily Limit: ${med.dailyLimit}",
-                        iconBg: Colors.blue.shade50,
-                        iconColor: const Color(0xFF4B84F4),
-                      ),
-                    )).toList(),
+                        )
+                        .toList(),
                   );
                 }
                 return Center(
@@ -101,10 +102,20 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Hey, Rafi", style: TextStyle(color: Colors.grey, fontSize: 14)),
+            const Text(
+              "Hey, Rafi",
+              style: TextStyle(color: Colors.grey, fontSize: 14),
+            ),
             Row(
               children: const [
-                Text("Thursday", style: TextStyle(color: Color(0xFF1A1C1E), fontWeight: FontWeight.bold, fontSize: 26)),
+                Text(
+                  "Thursday",
+                  style: TextStyle(
+                    color: Color(0xFF1A1C1E),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 26,
+                  ),
+                ),
                 Icon(Icons.keyboard_arrow_down, color: Colors.black, size: 28),
               ],
             ),
@@ -119,7 +130,9 @@ class HomeScreen extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const MedicationHistoryScreen()),
+                MaterialPageRoute(
+                  builder: (context) => const MedicationHistoryScreen(),
+                ),
               );
             },
           ),
@@ -127,7 +140,7 @@ class HomeScreen extends StatelessWidget {
         const Padding(
           padding: EdgeInsets.only(top: 25, right: 16),
           child: Icon(Icons.more_vert, color: Colors.black, size: 28),
-        )
+        ),
       ],
     );
   }
@@ -143,7 +156,7 @@ class HomeScreen extends StatelessWidget {
             color: Colors.black.withOpacity(0.04),
             blurRadius: 15,
             offset: const Offset(0, 6),
-          )
+          ),
         ],
       ),
       child: Row(
@@ -152,13 +165,22 @@ class HomeScreen extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Your plan\nis almost done!",
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, height: 1.1)),
+              const Text(
+                "Your plan\nis almost done!",
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w900,
+                  height: 1.1,
+                ),
+              ),
               const SizedBox(height: 14),
               Row(
                 children: const [
                   Icon(Icons.arrow_upward, color: Color(0xFF66BB6A), size: 18),
-                  Text(" 13% than week ago", style: TextStyle(color: Colors.grey, fontSize: 14)),
+                  Text(
+                    " 13% than week ago",
+                    style: TextStyle(color: Colors.grey, fontSize: 14),
+                  ),
                 ],
               ),
             ],
@@ -174,7 +196,8 @@ class HomeScreen extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         SizedBox(
-          width: 75, height: 75,
+          width: 75,
+          height: 75,
           child: CircularProgressIndicator(
             value: 0.78,
             strokeWidth: 10,
@@ -183,7 +206,10 @@ class HomeScreen extends StatelessWidget {
             strokeCap: StrokeCap.round,
           ),
         ),
-        const Text("78%", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+        const Text(
+          "78%",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+        ),
       ],
     );
   }
@@ -192,7 +218,9 @@ class HomeScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(colors: [Color(0xFFBDEADA), Color(0xFFC0D6F9)]),
+        gradient: const LinearGradient(
+          colors: [Color(0xFFBDEADA), Color(0xFFC0D6F9)],
+        ),
         borderRadius: BorderRadius.circular(30),
       ),
       child: Row(
@@ -201,14 +229,27 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: const [
-                Text("Early Drug Risk Monitoring",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: Colors.white)),
-                Text("AI-powered kidney protection",
-                    style: TextStyle(color: Colors.white70, fontSize: 13)),
+                Text(
+                  "Early Drug Risk Monitoring",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  "AI-powered kidney protection",
+                  style: TextStyle(color: Colors.white70, fontSize: 13),
+                ),
               ],
             ),
           ),
-          const Icon(Icons.shield_moon_outlined, color: Colors.white, size: 40),
+          Image.asset(
+            'lib/assets/Kidney img.png',
+            width: 90,
+            height: 90,
+            fit: BoxFit.contain,
+          )
         ],
       ),
     );
@@ -231,21 +272,44 @@ class HomeScreen extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 60, height: 60,
-            decoration: BoxDecoration(color: iconBg, borderRadius: BorderRadius.circular(20)),
-            child: Icon(Icons.medication_liquid_sharp, color: iconColor, size: 30),
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              color: iconBg,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Icon(
+              Icons.medication_liquid_sharp,
+              color: iconColor,
+              size: 30,
+            ),
           ),
           const SizedBox(width: 18),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                Text(sub, style: const TextStyle(color: Colors.grey, fontSize: 14)),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+                Text(
+                  sub,
+                  style: const TextStyle(color: Colors.grey, fontSize: 14),
+                ),
               ],
             ),
           ),
-          Text(days, style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.w600)),
+          Text(
+            days,
+            style: const TextStyle(
+              color: Colors.grey,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ],
       ),
     );

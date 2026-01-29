@@ -1,4 +1,4 @@
-class MedicineModel { // تأكدي من توحيد الاسم هنا
+class MedicineModel {
   final String name;
   final String instruction;
   final int dailyLimit;

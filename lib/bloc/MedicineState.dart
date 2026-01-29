@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:meditap/models/MedicineModel.dart';
-import '../models/MedicineModel.dart';
 
 
 abstract class MedicineState extends Equatable {
