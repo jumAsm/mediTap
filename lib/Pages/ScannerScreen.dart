@@ -68,7 +68,7 @@ class ScannerScreen extends StatelessWidget {
           ),
 
           Positioned(
-            bottom: 50,
+            bottom: 30,
             left: 0,
             right: 0,
             child: Column(

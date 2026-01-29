@@ -103,7 +103,7 @@ class HomeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              "Hey, Rafi",
+              "Hey, Ju",
               style: TextStyle(color: Colors.grey, fontSize: 14),
             ),
             Row(
@@ -246,8 +246,8 @@ class HomeScreen extends StatelessWidget {
           ),
           Image.asset(
             'lib/assets/Kidney img.png',
-            width: 90,
-            height: 90,
+            width: 70,
+            height: 70,
             fit: BoxFit.contain,
           )
         ],
