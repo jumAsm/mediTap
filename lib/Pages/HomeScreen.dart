@@ -1,39 +1,132 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meditap/constants/colors.dart';
 import '../Bloc/MedicineBloc.dart';
 import '../Bloc/MedicineState.dart';
-import 'MedicationHistory.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'ScannerScreen.dart';
 import 'MedicineDetails.dart';
+import 'package:easy_date_timeline/easy_date_timeline.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  DateTime _selectedDate = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FB),
+      backgroundColor: const Color(0xFFF3F4F7),
       appBar: _buildAppBar(context),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 20),
-            _buildProgressCard(),
-            const SizedBox(height: 24),
-            _buildKidneyRiskBanner(),
-            const SizedBox(height: 32),
+          children: <Widget>[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                EasyInfiniteDateTimeLine(
+                  showTimelineHeader: false,
+                  firstDate: _getStartOfCurrentWeek(),
+                  lastDate: _getEndOfCurrentWeek(),
+                  focusDate: _selectedDate,
+                  onDateChange: (selectedDate) {
+                    setState(() {
+                      _selectedDate = selectedDate;
+                    });
+                  },
+                  activeColor: const Color(0xFF395288),
+                  dayProps: EasyDayProps(
+                    dayStructure: DayStructure.dayStrDayNum,
+                    width: 48.0,
+                    height: 68.0,
 
-            const Text(
+                    activeDayStyle: DayStyle(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF395288),
+                        borderRadius: BorderRadius.circular(22),
+                      ),
+                      dayNumStyle: GoogleFonts.barlow(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      dayStrStyle: GoogleFonts.barlow(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                      ),
+                    ),
+                    todayStyle: DayStyle(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                          color: const Color(0xFF395288),
+                          width: 1.5,
+                        ),
+                        borderRadius: BorderRadius.circular(22),
+                      ),
+                      dayNumStyle: GoogleFonts.barlow(
+                        color: blk,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      dayStrStyle: GoogleFonts.barlow(
+                        color: offwhite,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                      ),
+                    ),
+
+                    inactiveDayStyle: DayStyle(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                          color: offwhite,
+                        ),
+                        borderRadius: BorderRadius.circular(22),
+                      ),
+                      dayNumStyle: GoogleFonts.barlow(
+                        color:blk,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      dayStrStyle: GoogleFonts.barlow(
+                        color: offwhite,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                      ),
+                    ),
+
+                    todayHighlightStyle: TodayHighlightStyle.none,
+                  ),
+                  timeLineProps: const EasyTimeLineProps(
+                    hPadding: 0.0,
+                    separatorPadding: 4.0,
+                  ),
+                ),
+              ],
+            ),
+           // const SizedBox(height: 10),
+           // _buildProgressCard(),
+            const SizedBox(height: 18),
+            _buildKidneyRiskBanner(),
+            const SizedBox(height: 22),
+             Text(
               "Your Medications",
-              style: TextStyle(
-                fontWeight: FontWeight.w800,
+              style: GoogleFonts.cabin(
+                fontWeight: FontWeight.bold,
                 fontSize: 18,
-                color: Color(0xFF1A1C1E),
+                color: blk,
               ),
             ),
-            const SizedBox(height: 16),
-
+            const SizedBox(height: 18),
             BlocBuilder<MedicineBloc, MedicineState>(
               builder: (context, state) {
                 if (state is MedicineLoaded && state.medicines.isNotEmpty) {
@@ -99,47 +192,33 @@ class HomeScreen extends StatelessWidget {
       toolbarHeight: 90,
       title: Padding(
         padding: const EdgeInsets.only(top: 25),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Hey, Ju",
-              style: TextStyle(color: Colors.grey, fontSize: 14),
-            ),
-            Row(
-              children: const [
-                Text(
-                  "Thursday",
-                  style: TextStyle(
-                    color: Color(0xFF1A1C1E),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 26,
-                  ),
-                ),
-                Icon(Icons.keyboard_arrow_down, color: Colors.black, size: 28),
-              ],
-            ),
-          ],
+        child: Container(
+          padding: const EdgeInsets.all(3),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+          ),
+          child: const CircleAvatar(
+            radius: 20,
+            backgroundImage: AssetImage('lib/assets/avi.jpg'),
+          ),
         ),
       ),
       actions: [
         Padding(
-          padding: const EdgeInsets.only(top: 25, right: 8),
-          child: IconButton(
-            icon: const Icon(Icons.history, color: Colors.black, size: 28),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const MedicationHistoryScreen(),
-                ),
-              );
-            },
+          padding: const EdgeInsets.only(top: 25, right: 4),
+          child: Text(
+            "Thursday",
+            style: GoogleFonts.barlow(
+              color: blk,
+              fontWeight: FontWeight.w700,
+              fontSize: 22,
+            ),
           ),
         ),
         const Padding(
-          padding: EdgeInsets.only(top: 25, right: 16),
-          child: Icon(Icons.more_vert, color: Colors.black, size: 28),
+          padding: EdgeInsets.only(top: 34, right: 16),
+          child: Icon(Icons.keyboard_arrow_down, color: blk, size: 28),
         ),
       ],
     );
@@ -213,43 +292,72 @@ class HomeScreen extends StatelessWidget {
       ],
     );
   }
-
   Widget _buildKidneyRiskBanner() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      height: 70, // الارتفاع المطلوب
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFFBDEADA), Color(0xFFC0D6F9)],
+          colors: [Color(0xFFB7C2DD), blues, offwhite],
+          begin: Alignment.bottomLeft,
+          end: Alignment.topRight,
         ),
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(20),
       ),
-      child: Row(
+      child: Stack(
+        clipBehavior: Clip.none,
         children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
-                  "Early Drug Risk Monitoring",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 17,
-                    color: Colors.white,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Early Drug Risk Monitoring",
+                        style: GoogleFonts.cabin(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Text(
+                        "AI-powered kidney protection",
+                        style: GoogleFonts.cabin(
+                          fontSize: 12,
+                          color: white,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                Text(
-                  "AI-powered kidney protection",
-                  style: TextStyle(color: Colors.white70, fontSize: 13),
-                ),
+                const SizedBox(width: 60),
               ],
             ),
           ),
-          Image.asset(
-            'lib/assets/Kidney img.png',
-            width: 70,
-            height: 70,
-            fit: BoxFit.contain,
-          )
+
+          Positioned(
+            right: 7,
+            bottom: -10,
+            top: -10,
+            child: Image.asset(
+              'lib/assets/Kidney img.png',
+              width: 55,
+              height: 55,
+              fit: BoxFit.contain,
+            ),
+          ),
+          Positioned(
+            top: -10,
+            bottom: -10,
+            right: 5,
+            child: IconButton(
+              icon: const Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 20),
+              onPressed: () {},
+            ),
+          ),
         ],
       ),
     );
@@ -267,7 +375,8 @@ class HomeScreen extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(28),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: offwhite),
       ),
       child: Row(
         children: [
@@ -314,4 +423,14 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+DateTime _getStartOfCurrentWeek() {
+  DateTime now = DateTime.now();
+  return now.subtract(Duration(days: now.weekday - 1));
+}
+
+DateTime _getEndOfCurrentWeek() {
+  DateTime now = DateTime.now();
+  return now.add(Duration(days: 7 - now.weekday));
 }
