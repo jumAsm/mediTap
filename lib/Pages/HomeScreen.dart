@@ -17,7 +17,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   DateTime _selectedDate = DateTime.now();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -191,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
       elevation: 0,
       toolbarHeight: 90,
       title: Padding(
-        padding: const EdgeInsets.only(top: 25),
+        padding: const EdgeInsets.only(top: 5),
         child: Container(
           padding: const EdgeInsets.all(3),
           decoration: BoxDecoration(
@@ -217,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       actions: [
         Padding(
-          padding: const EdgeInsets.only(top: 25, right: 4),
+          padding: const EdgeInsets.only(top: 5, right: 4),
           child: Text(
             "Thursday",
             style: GoogleFonts.barlow(
@@ -228,7 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         const Padding(
-          padding: EdgeInsets.only(top: 34, right: 16),
+          padding: EdgeInsets.only(top: 14, right: 16),
           child: Icon(Icons.keyboard_arrow_down, color: blk, size: 28),
         ),
       ],

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../Bloc/MedicineBloc.dart';
 import '../Bloc/MedicineEvent.dart';
+import '../constants/colors.dart';
 import '../models/MedicineModel.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ScannerScreen extends StatelessWidget {
   const ScannerScreen({super.key});
@@ -32,21 +34,25 @@ class ScannerScreen extends StatelessWidget {
             child: Row(
               children: [
                 IconButton(
-                  icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
+                  icon: const Icon(Icons.keyboard_arrow_left, color:white),
                   onPressed: () => Navigator.pop(context),
                 ),
-                const Expanded(
+                 Expanded(
                   child: Text(
                     "Add Medicine",
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                    style: GoogleFonts.barlow(color: white, fontSize: 22, fontWeight: FontWeight.w600),
                   ),
                 ),
                 const SizedBox(width: 48),
               ],
             ),
           ),
-          Center(
+          Positioned(
+            top: 100,
+            bottom: 180,
+            left: 0,
+            right: 0,
             child: Stack(
               alignment: Alignment.center,
               children: [
@@ -68,27 +74,26 @@ class ScannerScreen extends StatelessWidget {
           ),
 
           Positioned(
-            bottom: 30,
+            bottom: 20,
             left: 0,
             right: 0,
             child: Column(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9),
-                    borderRadius: BorderRadius.circular(15),
+                    color: white.withOpacity(0.9),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Text("Upload From Gallery  ", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600)),
-                      Icon(Icons.upload_outlined, color: Colors.black, size: 20),
+                    children: [
+                      Text("Upload From Gallery  ", style: GoogleFonts.cabin(color: blk, fontWeight: FontWeight.w700)),
+                      Icon(Icons.file_upload_outlined, color: blk, size: 20),
                     ],
                   ),
                 ),
-                const SizedBox(height: 40),
-
+                const SizedBox(height: 90),
                 GestureDetector(
                   onTap: () {
                     final mockMedicine = MedicineModel(
@@ -96,25 +101,22 @@ class ScannerScreen extends StatelessWidget {
                       instruction: "1 tablet every 6 hours",
                       dailyLimit: 4,
                     );
-
                     context.read<MedicineBloc>().add(AddMedicineEvent(mockMedicine));
-
                     Navigator.pop(context);
-
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Medicine added successfully!")),
                     );
                   },
                   child: Container(
-                    width: 85,
-                    height: 85,
+                    width: 75,
+                    height: 75,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 5),
+                      border: Border.all(color: white, width: 4),
                     ),
                     child: Container(
                       margin: const EdgeInsets.all(5),
-                      decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+                      decoration: const BoxDecoration(color: white, shape: BoxShape.circle),
                     ),
                   ),
                 ),
