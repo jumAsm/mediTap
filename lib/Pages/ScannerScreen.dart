@@ -93,7 +93,7 @@ class ScannerScreen extends StatelessWidget {
                   onTap: () {
                     final mockMedicine = MedicineModel(
                       name: "Paracetamol",
-                      instruction: "Take 1 tablet every 6 hours",
+                      instruction: "1 tablet every 6 hours",
                       dailyLimit: 4,
                     );
 

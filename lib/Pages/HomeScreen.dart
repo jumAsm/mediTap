@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       _selectedDate = selectedDate;
                     });
                   },
-                  activeColor: const Color(0xFF395288),
+                  activeColor: Color(0xFF1E48A3),
                   dayProps: EasyDayProps(
                     dayStructure: DayStructure.dayStrDayNum,
                     width: 48.0,
@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     activeDayStyle: DayStyle(
                       decoration: BoxDecoration(
-                        color: const Color(0xFF395288),
+                        color: Color(0xFF1E48A3),
                         borderRadius: BorderRadius.circular(22),
                       ),
                       dayNumStyle: GoogleFonts.barlow(
@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(
-                          color: const Color(0xFF395288),
+                          color: Color(0xFF1E48A3),
                           width: 1.5,
                         ),
                         borderRadius: BorderRadius.circular(22),
@@ -87,13 +87,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     inactiveDayStyle: DayStyle(
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        border: Border.all(
-                          color: offwhite,
-                        ),
+                        border: Border.all(color: offwhite),
                         borderRadius: BorderRadius.circular(22),
                       ),
                       dayNumStyle: GoogleFonts.barlow(
-                        color:blk,
+                        color: blk,
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                       ),
@@ -113,12 +111,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-           // const SizedBox(height: 10),
-           // _buildProgressCard(),
+            // const SizedBox(height: 10),
+            // _buildProgressCard(),
             const SizedBox(height: 18),
             _buildKidneyRiskBanner(),
             const SizedBox(height: 22),
-             Text(
+            Text(
               "Your Medications",
               style: GoogleFonts.cabin(
                 fontWeight: FontWeight.bold,
@@ -133,7 +131,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   return Column(
                     children: state.medicines
                         .map(
-                          (med) => GestureDetector(
+                          (med) =>
+                          GestureDetector(
                             onTap: () {
                               Navigator.push(
                                 context,
@@ -151,7 +150,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               iconColor: const Color(0xFF4B84F4),
                             ),
                           ),
-                        )
+
+                    )
                         .toList(),
                   );
                 }
@@ -178,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
             MaterialPageRoute(builder: (context) => const ScannerScreen()),
           );
         },
-        backgroundColor: const Color(0xFF4B84F4),
+        backgroundColor: blues,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         child: const Icon(Icons.add, color: Colors.white, size: 32),
       ),
@@ -194,9 +194,20 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.only(top: 25),
         child: Container(
           padding: const EdgeInsets.all(3),
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: Colors.white,
             shape: BoxShape.circle,
+            border: Border.fromBorderSide(
+              BorderSide(color: offwhite, width: 2),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                spreadRadius: 2,
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
           child: const CircleAvatar(
             radius: 20,
@@ -292,16 +303,25 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     );
   }
+
   Widget _buildKidneyRiskBanner() {
     return Container(
-      height: 70, // الارتفاع المطلوب
+      height: 70,
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFFB7C2DD), blues, offwhite],
+          colors: [Color(0xFFB7C2DD), blues, Color(0xFFD6DBE4)],
           begin: Alignment.bottomLeft,
           end: Alignment.topRight,
         ),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            spreadRadius: 2,
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Stack(
         clipBehavior: Clip.none,
@@ -325,10 +345,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       Text(
                         "AI-powered kidney protection",
-                        style: GoogleFonts.cabin(
-                          fontSize: 12,
-                          color: white,
-                        ),
+                        style: GoogleFonts.cabin(fontSize: 12, color: white),
                       ),
                     ],
                   ),
@@ -354,7 +371,11 @@ class _HomeScreenState extends State<HomeScreen> {
             bottom: -10,
             right: 5,
             child: IconButton(
-              icon: const Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 20),
+              icon: const Icon(
+                Icons.keyboard_arrow_right,
+                color: Colors.white,
+                size: 20,
+              ),
               onPressed: () {},
             ),
           ),
@@ -371,66 +392,123 @@ class _HomeScreenState extends State<HomeScreen> {
     required Color iconColor,
   }) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
+      height: 80,
+      margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: offwhite),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              color: iconBg,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Icon(
-              Icons.medication_liquid_sharp,
-              color: iconColor,
-              size: 30,
-            ),
-          ),
-          const SizedBox(width: 18),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-                Text(
-                  sub,
-                  style: const TextStyle(color: Colors.grey, fontSize: 14),
-                ),
-              ],
-            ),
-          ),
-          Text(
-            days,
-            style: const TextStyle(
-              color: Colors.grey,
-              fontWeight: FontWeight.w600,
-            ),
+        border: Border.all(color: Colors.grey.shade100),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            spreadRadius: 2,
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
+      child: ClipRRect( // لضمان أن التدرج لا يخرج عن حدود انحناء الحواف
+        borderRadius: BorderRadius.circular(18),
+        child: Stack(
+          children: [
+            // الجزء الخاص بالتدرج الأحمر في جهة اليمين
+            Align(
+              alignment: Alignment.centerRight,
+              child: Container(
+                width: 100,
+                // عرض منطقة التدرج
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.white.withOpacity(0), // يتلاشى للشفافية
+                      Color(0xFFC10D43).withOpacity(0.1),
+                      Color(0xFFC10D43).withOpacity(0.3),
+                    ],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  ),
+                ),
+                alignment: Alignment.centerRight,
+                padding: const EdgeInsets.only(right: 15),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min, // ليأخذ العمود مساحة النص فقط
+                  crossAxisAlignment: CrossAxisAlignment.center, // يضمن توسيط النصوص فوق بعضها
+                  children: [
+                    Text(
+                      'Heart Beat',
+                      style: GoogleFonts.cabin(
+                        color: blk,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 10,
+                      ),
+                    ),
+
+                    Text(
+                      '72 BPM',
+                      style: GoogleFonts.barlow(
+                        color: blk,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            // محتوى الكارت الأساسي
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                children: [
+                  Center(
+                    child: Image.asset(
+                      'lib/assets/pill01_v1_w 1 (1).png',
+                      width: 50,
+                      height: 50,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+
+                      children: [
+                        Text(
+                          title,
+                          style: GoogleFonts.barlow(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                            sub,
+                            style: GoogleFonts.cabin(
+                                color: Colors.grey,
+                                fontSize: 12
+                            )
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
-}
 
-DateTime _getStartOfCurrentWeek() {
-  DateTime now = DateTime.now();
-  return now.subtract(Duration(days: now.weekday - 1));
-}
+  DateTime _getStartOfCurrentWeek() {
+    DateTime now = DateTime.now();
+    return now.subtract(Duration(days: now.weekday - 1));
+  }
 
-DateTime _getEndOfCurrentWeek() {
-  DateTime now = DateTime.now();
-  return now.add(Duration(days: 7 - now.weekday));
+  DateTime _getEndOfCurrentWeek() {
+    DateTime now = DateTime.now();
+    return now.add(Duration(days: 7 - now.weekday));
+  }
 }

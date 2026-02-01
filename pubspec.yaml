@@ -39,3 +39,6 @@ flutter:
   assets:
     - lib/assets/Kidney img.png
     - lib/assets/avi.jpg
+    - lib/assets/pillCir.png
+    - lib/assets/pill01_v1_w 1.png
+    - lib/assets/pill01_v1_w 1 (1).png
